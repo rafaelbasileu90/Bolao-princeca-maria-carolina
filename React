@@ -1,0 +1,124 @@
+import React, { useState } from "react"; import { Heart, Flower2, Strawberry } from "lucide-react";
+
+export default function BolaoPrincesaMariaCarolina() { const [currency, setCurrency] = useState("EUR"); const [amount, setAmount] = useState(""); const [name, setName] = useState(""); const [date, setDate] = useState(""); const [time, setTime] = useState("");
+
+// Substituir pelos links reais da Wise depois const wiseLinks = { EUR: "https://wise.com/pay/SEU_LINK_EURO?amount=", BRL: "https://wise.com/pay/SEU_LINK_REAL?amount=", };
+
+const today = new Date().toISOString().split("T")[0]; const maxDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) .toISOString() .split("T")[0];
+
+const handleSubmit = (e) => { e.preventDefault(); if (!name || !date || !time) { alert("Por favor, preenche todos os campos obrigatórios."); return; } alert( Palpite registado!\nNome: ${name}\nData: ${date}\nHora: ${time}\nValor: ${amount || "0"} ${currency} ); };
+
+const buildWiseLink = () => { if (!wiseLinks[currency]) return "#"; return ${wiseLinks[currency]}${amount || 0}; };
+
+return ( <div className="min-h-screen bg-[#F8F6F2] flex flex-col items-center justify-start p-6"> <div className="max-w-2xl w-full bg-white shadow-lg rounded-2xl p-6 border border-[#EADBCF]"> <div className="text-center mb-6"> <h1 className="text-3xl font-semibold text-[#B43A3A] font-serif"> 👑 Bolão da Princesa Maria Carolina </h1> <p className="text-[#9BB68C] mt-2"> Adivinha a data e hora do nascimento — participa com o valor que quiseres! </p> </div>
+
+<div className="flex justify-center gap-3 mb-4">
+      <button
+        onClick={() => setCurrency("EUR")}
+        className={`px-4 py-2 rounded-full border ${
+          currency === "EUR"
+            ? "bg-[#AFCFE4] text-white"
+            : "bg-white border-[#AFCFE4] text-[#AFCFE4]"
+        }`}
+      >
+        € Euro
+      </button>
+      <button
+        onClick={() => setCurrency("BRL")}
+        className={`px-4 py-2 rounded-full border ${
+          currency === "BRL"
+            ? "bg-[#B43A3A] text-white"
+            : "bg-white border-[#B43A3A] text-[#B43A3A]"
+        }`}
+      >
+        R$ Real
+      </button>
+    </div>
+
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm text-gray-600 mb-1">Nome</label>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full border rounded-lg p-2"
+          placeholder="Teu nome"
+          required
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm text-gray-600 mb-1">Data</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            min={today}
+            max={maxDate}
+            className="w-full border rounded-lg p-2"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm text-gray-600 mb-1">Hora</label>
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="w-full border rounded-lg p-2"
+            required
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm text-gray-600 mb-1">
+          Valor ({currency})
+        </label>
+        <input
+          type="number"
+          min="0"
+          step="0.01"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Ex: 0, 5 ou 10"
+          className="w-full border rounded-lg p-2"
+        />
+      </div>
+
+      <div className="flex flex-col items-center gap-3 mt-6">
+        <a
+          href={buildWiseLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#B43A3A] hover:bg-[#9B3232] text-white px-6 py-3 rounded-full font-semibold transition-all"
+        >
+          💸 Enviar aposta via Wise
+        </a>
+
+        <button
+          type="submit"
+          className="bg-[#AFCFE4] hover:bg-[#9BBED4] text-white px-6 py-3 rounded-full font-semibold transition-all"
+        >
+          Registrar Palpite
+        </button>
+      </div>
+    </form>
+
+    <div className="mt-8 text-center text-[#9BB68C] text-sm">
+      <div className="flex justify-center gap-2 mb-2">
+        <Heart className="text-[#B43A3A] w-4 h-4" />
+        <Strawberry className="text-[#B43A3A] w-4 h-4" />
+        <Flower2 className="text-[#9BB68C] w-4 h-4" />
+      </div>
+      <p>
+        Feito com amor por familiares e amigos — boa sorte e muita ternura
+        à Princesa Maria Carolina 💕
+      </p>
+    </div>
+  </div>
+</div>
+
+); }
+
